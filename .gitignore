@@ -1,0 +1,15 @@
+# Node modules (très lourd, inutile sur GitHub)
+node_modules/
+backend/node_modules/
+frontend/node_modules/
+
+# Variables sensibles (sécurité !)
+backend/.env
+
+# Angular build
+frontend/dist/
+frontend/.angular/
+
+# Logs
+*.log
+npm-debug.log*

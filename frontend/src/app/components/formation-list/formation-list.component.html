@@ -1,0 +1,89 @@
+<div class="container-fluid">
+
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="text-warning fw-bold">📚 Liste des Formations</h2>
+    <a routerLink="/formations/ajouter" class="btn btn-warning">
+      ➕ Ajouter une Formation
+    </a>
+  </div>
+
+  <div class="card shadow-sm">
+    <div class="card-body p-0">
+      <table class="table table-striped table-hover mb-0">
+        <thead class="table-warning">
+          <tr>
+            <th>Titre</th>
+            <th>Niveau</th>
+            <th>Département</th>
+            <th class="text-center">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let f of formations">
+            <td class="fw-semibold">{{ f.titre }}</td>
+            <td><span class="badge bg-primary">{{ f.niveau }}</span></td>
+            <td>{{ f.departement || '—' }}</td>
+            <td class="text-center">
+              <button class="btn btn-sm btn-warning me-1"
+                data-bs-toggle="modal" data-bs-target="#editModal"
+                (click)="onEdit(f)">✏️ Modifier</button>
+              <button class="btn btn-sm btn-danger"
+                (click)="deleteFormation(f)">🗑 Supprimer</button>
+            </td>
+          </tr>
+          <tr *ngIf="formations.length === 0">
+            <td colspan="4" class="text-center text-muted py-4">
+              Aucune formation.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card-footer text-muted small">
+      Total : <strong>{{ formations.length }}</strong> formation(s)
+    </div>
+  </div>
+</div>
+
+<!-- Modal Modifier -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-warning">
+        <h5 class="modal-title fw-bold">✏️ Modifier la Formation</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="editForm">
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Titre *</label>
+            <input formControlName="titre" type="text" class="form-control"
+              [class.is-invalid]="submitted && editForm.get('titre')?.invalid" />
+            <div class="invalid-feedback">Le titre est obligatoire.</div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Niveau</label>
+            <select formControlName="niveau" class="form-select">
+              <option *ngFor="let n of niveaux" [value]="n">{{ n }}</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Département</label>
+            <input formControlName="departement" type="text" class="form-control" />
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Description</label>
+            <textarea formControlName="description" class="form-control" rows="3"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary"
+          data-bs-dismiss="modal">Fermer</button>
+        <button type="button" class="btn btn-warning"
+          data-bs-dismiss="modal"
+          (click)="updateFormation()">💾 Mettre à jour</button>
+      </div>
+    </div>
+  </div>
+</div>

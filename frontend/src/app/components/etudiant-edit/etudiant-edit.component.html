@@ -1,0 +1,60 @@
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-7">
+      <div class="card shadow">
+        <div class="card-header bg-warning">
+          <h4 class="mb-0">✏️ Modifier un Étudiant</h4>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="formValue" (ngSubmit)="onSubmit()">
+
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Nom *</label>
+              <input formControlName="nom" type="text" class="form-control"
+                [class.is-invalid]="submitted && nom?.invalid" />
+              <div class="invalid-feedback">Le nom est obligatoire.</div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Prénom *</label>
+              <input formControlName="prenom" type="text" class="form-control"
+                [class.is-invalid]="submitted && prenom?.invalid" />
+              <div class="invalid-feedback">Le prénom est obligatoire.</div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Email *</label>
+              <input formControlName="email" type="email" class="form-control"
+                [class.is-invalid]="submitted && email?.invalid" />
+              <div class="invalid-feedback">
+                <span *ngIf="email?.errors?.['required']">Email obligatoire.</span>
+                <span *ngIf="email?.errors?.['email']">Format invalide.</span>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Téléphone</label>
+              <input formControlName="telephone" type="text" class="form-control" />
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Formation</label>
+              <select formControlName="formation" class="form-select">
+                <option value="">-- Aucune --</option>
+                <option *ngFor="let f of formations" [value]="f._id">
+                  {{ f.titre }} ({{ f.niveau }})
+                </option>
+              </select>
+            </div>
+
+            <div class="d-flex gap-2 mt-4">
+              <button type="submit" class="btn btn-warning">💾 Mettre à jour</button>
+              <a routerLink="/etudiants" class="btn btn-outline-secondary">❌ Annuler</a>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

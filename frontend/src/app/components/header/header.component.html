@@ -1,0 +1,47 @@
+<nav class="navbar navbar-expand-lg shadow">
+  <div class="container-fluid px-4">
+
+    <a class="navbar-brand d-flex align-items-center gap-2" routerLink="/">
+      <div style="background:rgba(255,255,255,0.2);
+                  border-radius:10px; padding:6px 10px;">
+        🎓
+      </div>
+      <span>Gestion Scolaire</span>
+    </a>
+
+    <button class="navbar-toggler border-0" type="button"
+      data-bs-toggle="collapse" data-bs-target="#navMenu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-end" id="navMenu">
+      <div class="d-flex gap-2 align-items-center flex-wrap">
+
+        <a routerLink="/etudiants" routerLinkActive="active"
+          class="btn nav-btn text-white"
+          style="background:rgba(255,255,255,0.15)">
+          <i class="bi bi-people-fill me-1"></i> Liste Étudiants
+        </a>
+
+        <a routerLink="/etudiants/ajouter"
+          class="btn nav-btn"
+          style="background:linear-gradient(135deg,#00c853,#69f0ae);color:#1b5e20">
+          <i class="bi bi-person-plus-fill me-1"></i> Ajouter Étudiant
+        </a>
+
+        <a routerLink="/formations" routerLinkActive="active"
+          class="btn nav-btn text-white"
+          style="background:rgba(255,255,255,0.15)">
+          <i class="bi bi-mortarboard-fill me-1"></i> Liste Formations
+        </a>
+
+        <a routerLink="/formations/ajouter"
+          class="btn nav-btn"
+          style="background:linear-gradient(135deg,#ff6f00,#ffa000);color:white">
+          <i class="bi bi-plus-circle-fill me-1"></i> Ajouter Formation
+        </a>
+
+      </div>
+    </div>
+  </div>
+</nav>

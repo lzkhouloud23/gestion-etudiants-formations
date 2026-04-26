@@ -1,0 +1,175 @@
+<div class="container-fluid py-4 px-4">
+
+  <!-- En-tête -->
+  <div class="row align-items-center mb-4">
+    <div class="col">
+      <h2 class="page-title mb-0">
+        <i class="bi bi-people-fill me-2"></i>Liste des Étudiants
+      </h2>
+      <p class="text-muted mb-0 mt-1">Gérez tous vos étudiants inscrits</p>
+    </div>
+    <div class="col-auto">
+      <a routerLink="/etudiants/ajouter" class="btn btn-success px-4 py-2">
+        <i class="bi bi-person-plus-fill me-2"></i>Ajouter un Étudiant
+      </a>
+    </div>
+  </div>
+
+  <!-- Cartes stats -->
+  <div class="row g-3 mb-4">
+    <div class="col-md-3">
+      <div class="stat-card">
+        <div class="number">{{ etudiants.length }}</div>
+        <div class="opacity-75 mt-1">
+          <i class="bi bi-people me-1"></i>Total Étudiants
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card p-4 h-100">
+        <div class="d-flex align-items-center gap-3">
+          <div style="background:#e8f5e9;border-radius:12px;padding:12px">
+            <i class="bi bi-mortarboard-fill text-success fs-4"></i>
+          </div>
+          <div>
+            <div class="fw-bold fs-5">{{ etudiantsAvecFormation }}</div>
+            <div class="text-muted small">Avec formation</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card p-4 h-100">
+        <div class="d-flex align-items-center gap-3">
+          <div style="background:#fff3e0;border-radius:12px;padding:12px">
+            <i class="bi bi-person-x-fill fs-4" style="color:#f57c00"></i>
+          </div>
+          <div>
+            <div class="fw-bold fs-5">{{ etudiantsSansFormation }}</div>
+            <div class="text-muted small">Sans formation</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filtres -->
+  <div class="card mb-4">
+    <div class="card-body p-4">
+      <div class="row g-3 align-items-end">
+        <div class="col-md-4">
+          <label class="form-label">
+            <i class="bi bi-search me-1"></i>Recherche par nom
+          </label>
+          <input type="text" class="form-control"
+            placeholder="Tapez un nom ou prénom..."
+            [(ngModel)]="searchNom" />
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">
+            <i class="bi bi-funnel me-1"></i>Filtrer par formation
+          </label>
+          <select class="form-select" [(ngModel)]="selectedFormation">
+            <option value="">-- Toutes les formations --</option>
+            <option *ngFor="let f of formations" [value]="f._id">
+              {{ f.titre }}
+            </option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <button class="btn btn-outline-secondary w-100"
+            (click)="resetFiltres()">
+            <i class="bi bi-arrow-counterclockwise me-1"></i>Réinitialiser
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tableau -->
+  <div class="card">
+    <div class="card-body p-0">
+      <table class="table mb-0">
+        <thead style="background:linear-gradient(135deg,#e8eaf6,#c5cae9)">
+          <tr>
+            <th style="color:#1a237e">#</th>
+            <th style="color:#1a237e">Nom</th>
+            <th style="color:#1a237e">Prénom</th>
+            <th style="color:#1a237e">Email</th>
+            <th style="color:#1a237e">Téléphone</th>
+            <th style="color:#1a237e">Formation</th>
+            <th style="color:#1a237e" class="text-center">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr *ngFor="let e of etudiantsFiltres; index as i">
+            <td>
+              <span style="background:#e8eaf6;color:#3949ab;
+                           border-radius:50%;width:32px;height:32px;
+                           display:inline-flex;align-items:center;
+                           justify-content:center;font-weight:600;
+                           font-size:0.8rem">
+                {{ i + 1 }}
+              </span>
+            </td>
+            <td class="fw-semibold">{{ e.nom }}</td>
+            <td>{{ e.prenom }}</td>
+            <td>
+              <i class="bi bi-envelope me-1 opacity-50" style="color:#3949ab"></i>
+              <span style="color:#3949ab">{{ e.email }}</span>
+            </td>
+            <td>
+              <span *ngIf="e.telephone">
+                <i class="bi bi-telephone me-1 opacity-50"></i>{{ e.telephone }}
+              </span>
+              <span *ngIf="!e.telephone" class="text-muted">—</span>
+            </td>
+            <td>
+              <span *ngIf="e.formation" class="badge"
+                style="background:linear-gradient(135deg,#1a237e,#3949ab);
+                       padding:6px 12px;border-radius:8px">
+                <i class="bi bi-mortarboard me-1"></i>{{ e.formation.titre }}
+              </span>
+              <span *ngIf="!e.formation" class="badge"
+                style="background:#f5f5f5;color:#9e9e9e;
+                       padding:6px 12px;border-radius:8px">
+                Non affecté
+              </span>
+            </td>
+            <td class="text-center">
+              <a [routerLink]="['/etudiants/modifier', e._id]"
+                class="btn btn-sm btn-warning me-2">
+                <i class="bi bi-pencil-fill me-1"></i>Modifier
+              </a>
+              <button class="btn btn-sm btn-danger"
+                (click)="deleteEtudiant(e)">
+                <i class="bi bi-trash-fill me-1"></i>Supprimer
+              </button>
+            </td>
+          </tr>
+
+          <tr *ngIf="etudiantsFiltres.length === 0">
+            <td colspan="7">
+              <div class="empty-state">
+                <i class="bi bi-inbox"></i>
+                <p class="fw-semibold fs-5 mb-1">Aucun étudiant trouvé</p>
+                <p class="text-muted small">Essayez de modifier vos filtres</p>
+              </div>
+            </td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+    <div class="card-footer"
+      style="background:#fafafa;border-radius:0 0 16px 16px;padding:12px 20px">
+      <span class="text-muted small">
+        <i class="bi bi-info-circle me-1"></i>
+        Affichage de <strong>{{ etudiantsFiltres.length }}</strong>
+        sur <strong>{{ etudiants.length }}</strong> étudiant(s)
+      </span>
+    </div>
+  </div>
+
+</div>
